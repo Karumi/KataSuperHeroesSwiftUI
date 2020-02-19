@@ -15,7 +15,7 @@ struct SuperHeroesList: View {
                 ForEach(superHeroData) { superHero in
                     ZStack {
                         SuperHeroRow(superHero: superHero)
-                        NavigationLink(destination: SuperHeroDetail()) {
+                        NavigationLink(destination: SuperHeroDetail(superHero: superHero)) {
                             EmptyView()
                         }.buttonStyle(PlainButtonStyle())
                     }

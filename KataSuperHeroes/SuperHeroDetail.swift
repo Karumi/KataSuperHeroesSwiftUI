@@ -7,15 +7,36 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct SuperHeroDetail: View {
+    var superHero: SuperHero
+
     var body: some View {
-        Text("Hello, World!")
+        VStack(alignment: .leading) {
+            ZStack(alignment: .bottomTrailing) {
+                WebImage(url: superHero.photo!)
+                .resizable()
+                .scaledToFit()
+                if superHero.isAvenger {
+                    Image("ic_avenger_badge")
+                        .padding()
+                }
+            }
+            Text(superHero.name)
+                .foregroundColor(.white)
+                .padding()
+            Text(superHero.description)
+                .foregroundColor(.white)
+                .padding()
+            Spacer()
+        }.background(Color("backgroundColor"))
+
     }
 }
 
 struct SuperHeroDetail_Previews: PreviewProvider {
     static var previews: some View {
-        SuperHeroDetail()
+        SuperHeroDetail(superHero: superHeroData[1])
     }
 }
