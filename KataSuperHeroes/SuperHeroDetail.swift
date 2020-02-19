@@ -30,8 +30,9 @@ struct SuperHeroDetail: View {
                 .foregroundColor(.white)
                 .padding()
             Spacer()
-        }.background(Color("backgroundColor"))
-
+        }
+        .background(Color("backgroundColor"))
+        .navigationBarTitle(Text(superHero.name), displayMode: .inline)
     }
 }
 

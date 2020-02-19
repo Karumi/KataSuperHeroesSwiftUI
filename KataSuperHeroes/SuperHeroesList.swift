@@ -22,7 +22,9 @@ struct SuperHeroesList: View {
                     .listRowInsets(EdgeInsets())
                 }
             }
+            .navigationBarTitle("Kata Super Heroes")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
