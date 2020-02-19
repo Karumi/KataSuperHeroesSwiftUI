@@ -10,10 +10,17 @@ import SwiftUI
 
 struct SuperHeroesList: View {
     var body: some View {
-        List {
-            ForEach(superHeroData) { superHero in
-                SuperHeroRow(superHero: superHero)
+        NavigationView {
+            List {
+                ForEach(superHeroData) { superHero in
+                    ZStack {
+                        SuperHeroRow(superHero: superHero)
+                        NavigationLink(destination: SuperHeroDetail()) {
+                            EmptyView()
+                        }.buttonStyle(PlainButtonStyle())
+                    }
                     .listRowInsets(EdgeInsets())
+                }
             }
         }
     }
