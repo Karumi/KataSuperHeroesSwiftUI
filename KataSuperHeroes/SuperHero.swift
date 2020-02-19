@@ -16,3 +16,9 @@ struct SuperHero {
     let description: String
 
 }
+
+extension SuperHero: Identifiable {
+    var id: String {
+        return self.name
+    }
+}
