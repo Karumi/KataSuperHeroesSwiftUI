@@ -9,28 +9,43 @@
 import SwiftUI
 
 struct SuperHeroesList: View {
+    @ObservedObject
+    var viewModel: SuperHeroesViewModel
+
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(superHeroData) { superHero in
-                    ZStack {
-                        SuperHeroRow(superHero: superHero)
-                        NavigationLink(destination: SuperHeroDetail(superHero: superHero)) {
-                            EmptyView()
-                        }.buttonStyle(PlainButtonStyle())
+        Group {
+            if self.viewModel.isLoading {
+                LoadingSwiftView()
+            } else {
+                NavigationView {
+                    List {
+                        ForEach(viewModel.superHeroes) { superHero in
+                            ZStack {
+                                SuperHeroRow(superHero: superHero)
+                                NavigationLink(destination: ServiceLocator().provideSuperHeroDetail(superHero.name)) {
+                                    EmptyView()
+                                }.buttonStyle(PlainButtonStyle())
+                            }
+                            .listRowInsets(EdgeInsets())
+                        }
                     }
-                    .listRowInsets(EdgeInsets())
+                    .navigationBarTitle("Kata Super Heroes")
+                    .navigationViewStyle(StackNavigationViewStyle())
                 }
             }
-            .navigationBarTitle("Kata Super Heroes")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear {
+          self.viewModel.load()
+        }
     }
 }
 
 struct SuperHeroesList_Previews: PreviewProvider {
     static var previews: some View {
-        SuperHeroesList()
+        let viewModel = ServiceLocator().provideSuperHeroesViewModel()
+        viewModel.superHeroes = superHeroData
+        viewModel.isLoading = false
+        return SuperHeroesList(viewModel: viewModel)
     }
 }
 

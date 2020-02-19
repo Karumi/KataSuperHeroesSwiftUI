@@ -8,12 +8,11 @@
 
 import UIKit
 
-class SuperHeroesViewController: KataSuperHeroesViewController, SuperHeroesUI {
+class SuperHeroesViewController: KataSuperHeroesViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyCaseView: UILabel!
 
-    var presenter: SuperHeroesPresenter!
     var dataSource: SuperHeroesTableDataSource!
     var delegate: UITableViewDelegate!
 
@@ -25,7 +24,6 @@ class SuperHeroesViewController: KataSuperHeroesViewController, SuperHeroesUI {
         tableView.accessibilityIdentifier = "SuperHeroesTableView"
         configureNavigationBarBackButton()
         super.viewDidLoad()
-        presenter.viewDidLoad()
     }
 
     func showEmptyCase() {
