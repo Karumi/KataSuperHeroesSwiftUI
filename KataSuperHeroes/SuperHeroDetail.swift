@@ -17,6 +17,9 @@ struct SuperHeroDetail: View {
         Group {
             if viewModel.isLoading {
                 LoadingSwiftView()
+                .onAppear() {
+                    self.viewModel.load()
+                }
             } else {
                 viewModel.superHero.map { superHero in
                     VStack(alignment: .leading) {
@@ -39,6 +42,7 @@ struct SuperHeroDetail: View {
                     }
                     .background(Color("backgroundColor"))
                     .navigationBarTitle(Text(superHero.name), displayMode: .inline)
+                    .edgesIgnoringSafeArea(.bottom)
                 }
             }
         }

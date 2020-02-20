@@ -31,6 +31,9 @@ struct SuperHeroesList: View {
                     }
                     .navigationBarTitle("Kata Super Heroes")
                     .navigationViewStyle(StackNavigationViewStyle())
+                    viewModel.superHeroes.first.map { superHero in 
+                        ServiceLocator().provideSuperHeroDetail(superHero.name)
+                    }
                 }
             }
         }
