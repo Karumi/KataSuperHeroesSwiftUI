@@ -20,6 +20,7 @@ struct SuperHeroRow: View {
             .frame(width: nil, height: 163, alignment: .center)
             .clipped()
             gradient()
+            .accessibility(label: Text("Image of \(superHero.name)"))
             HStack(alignment: .bottom) {
                 Text(superHero.name)
                     .foregroundColor(.white)
@@ -27,6 +28,7 @@ struct SuperHeroRow: View {
                 Spacer()
                 if superHero.isAvenger {
                     Image("ic_avenger_badge")
+                        .accessibility(label: Text("\(superHero.name) Avenger Badge"))
                 }
             }.padding()
         }

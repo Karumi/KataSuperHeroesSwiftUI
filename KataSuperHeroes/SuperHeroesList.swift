@@ -17,22 +17,27 @@ struct SuperHeroesList: View {
             if self.viewModel.isLoading {
                 LoadingSwiftView()
             } else {
-                NavigationView {
-                    List {
-                        ForEach(viewModel.superHeroes) { superHero in
-                            ZStack {
-                                SuperHeroRow(superHero: superHero)
-                                NavigationLink(destination: ServiceLocator().provideSuperHeroDetail(superHero.name)) {
-                                    EmptyView()
-                                }.buttonStyle(PlainButtonStyle())
+                if viewModel.superHeroes.isEmpty {
+                    Text("¯\\_(ツ)_/¯")
+                } else {
+                    NavigationView {
+                        List {
+                            ForEach(viewModel.superHeroes) { superHero in
+                                ZStack {
+                                    SuperHeroRow(superHero: superHero)
+                                    NavigationLink(destination: ServiceLocator().provideSuperHeroDetail(superHero.name)) {
+                                        EmptyView()
+                                    }.buttonStyle(PlainButtonStyle())
+                                }
+                                .listRowInsets(EdgeInsets())
                             }
-                            .listRowInsets(EdgeInsets())
                         }
-                    }
-                    .navigationBarTitle("Kata Super Heroes")
-                    .navigationViewStyle(StackNavigationViewStyle())
-                    viewModel.superHeroes.first.map { superHero in 
-                        ServiceLocator().provideSuperHeroDetail(superHero.name)
+                        .navigationBarTitle("Kata Super Heroes")
+                        .navigationViewStyle(StackNavigationViewStyle())
+                        .accessibility(identifier: "List of SuperHeroes")
+                        viewModel.superHeroes.first.map { superHero in
+                            ServiceLocator().provideSuperHeroDetail(superHero.name)
+                        }
                     }
                 }
             }

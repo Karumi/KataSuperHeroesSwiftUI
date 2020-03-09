@@ -29,13 +29,18 @@ struct SuperHeroDetail: View {
                             .scaledToFit()
                             if superHero.isAvenger {
                                 Image("ic_avenger_badge")
+                                    .accessibility(label: Text("Avengers Badge"))
                                     .padding()
                             }
                         }
                         Text(superHero.name)
+                            .accessibility(label: Text("Superhero name"))
+                            .accessibility(value: Text(superHero.name))
                             .foregroundColor(.white)
                             .padding()
                         Text(superHero.description)
+                            .accessibility(label: Text("Superhero description"))
+                            .accessibility(value: Text(superHero.description))
                             .foregroundColor(.white)
                             .padding()
                         Spacer()
