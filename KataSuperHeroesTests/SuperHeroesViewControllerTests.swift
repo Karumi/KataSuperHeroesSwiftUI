@@ -10,6 +10,7 @@ import Foundation
 import KIF
 import Nimble
 import UIKit
+import SwiftUI
 @testable import KataSuperHeroes
 
 class SuperHeroesViewControllerTests: AcceptanceTestCase {
@@ -26,27 +27,19 @@ class SuperHeroesViewControllerTests: AcceptanceTestCase {
 
     func testShowsSuperHeroNamesIfThereAreSuperHeroes() {
         let superHeroes = givenThereAreSomeSuperHeroes()
-
-        let viewController = openSuperHeroesViewController()
+        openSuperHeroesViewController()
 
         for i in 0..<superHeroes.count {
-            let superHeroCell = tester().waitForCell(at: IndexPath(row: i, section: 0),
-                                                     in: viewController.tableView) as! SuperHeroTableViewCell
-
-            expect(superHeroCell.nameLabel.text).to(equal(superHeroes[i].name))
+            tester().waitForView(withAccessibilityLabel: superHeroes[i].name)
         }
     }
 
     func testShowsAvengersBadgeIfASuperHeroIsPartOfTheAvengersTeam() {
         let superHeroes = givenThereAreSomeAvengers()
-
-        let viewController = openSuperHeroesViewController()
+        openSuperHeroesViewController()
 
         for i in 0..<superHeroes.count {
-            let superHeroCell = tester().waitForCell(at: IndexPath(row: i, section: 0),
-                                                     in: viewController.tableView) as! SuperHeroTableViewCell
-
-            expect(superHeroCell.avengersBadgeImageView.isHidden).to(beFalse())
+            let superHeroCell = tester().waitForView(withAccessibilityLabel: "\(superHeroes[i].name) Avenger Badge")
         }
     }
 
@@ -56,10 +49,8 @@ class SuperHeroesViewControllerTests: AcceptanceTestCase {
         let viewController = openSuperHeroesViewController()
 
         for i in 0..<superHeroes.count {
-            let superHeroCell = tester().waitForCell(at: IndexPath(row: i, section: 0),
-                                                     in: viewController.tableView) as! SuperHeroTableViewCell
 
-            expect(superHeroCell.avengersBadgeImageView.isHidden).to(beTrue())
+            let superHeroCell = tester().waitForAbsenceOfView(withAccessibilityLabel:  "\(superHeroes[i].name) Avenger Badge")
         }
     }
 
@@ -79,26 +70,16 @@ class SuperHeroesViewControllerTests: AcceptanceTestCase {
         tester().waitForAbsenceOfView(withAccessibilityLabel: "LoadingView")
     }
 
-    func testShowsTheExactNumberOfSuperHeroes() {
-        let superHeroes = givenThereAreSomeSuperHeroes()
-
-        openSuperHeroesViewController()
-
-        let tableView = tester().waitForView(withAccessibilityLabel: "SuperHeroesTableView") as! UITableView
-        expect(tableView.numberOfRows(inSection: 0)).to(equal(superHeroes.count))
-    }
-
     func testOpensSuperHeroDetailViewControllerOnSuperHeroTapped() {
         let superHeroIndex = 1
         let superHeroes = givenThereAreSomeSuperHeroes()
         let superHero = superHeroes[superHeroIndex]
         openSuperHeroesViewController()
 
-        tester().waitForView(withAccessibilityLabel: superHero.name)
-        tester().tapRow(at: IndexPath(row: superHeroIndex, section: 0),
-            inTableViewWithAccessibilityIdentifier: "SuperHeroesTableView")
+        tester().waitForView(withAccessibilityLabel: "Image of \(superHero.name)")
+        tester().tapView(withAccessibilityLabel: "Image of \(superHero.name)")
 
-        tester().waitForView(withAccessibilityLabel: superHero.name)
+        tester().waitForAbsenceOfView(withAccessibilityLabel: "Superhero name")
     }
 
     fileprivate func givenThereAreSomeAvengers() -> [SuperHero] {
@@ -123,15 +104,12 @@ class SuperHeroesViewControllerTests: AcceptanceTestCase {
     }
 
     @discardableResult
-    fileprivate func openSuperHeroesViewController() -> SuperHeroesViewController {
-        let superHeroesViewController = ServiceLocator()
-            .provideSuperHeroesViewController() as! SuperHeroesViewController
-        superHeroesViewController.presenter = SuperHeroesPresenter(ui: superHeroesViewController,
-                getSuperHeroes: GetSuperHeroes(repository: repository))
-        let rootViewController = UINavigationController()
-        rootViewController.viewControllers = [superHeroesViewController]
-        present(viewController: rootViewController)
+    fileprivate func openSuperHeroesViewController() -> UIHostingController<SuperHeroesList> {
+        var superHeroesList = ServiceLocator().provideSuperHeroesList()
+        superHeroesList.viewModel = SuperHeroesViewModel(getSuperHeroes: GetSuperHeroes(repository: repository))
+        let vc = UIHostingController(rootView: superHeroesList)
+        present(viewController: vc)
         tester().waitForAnimationsToFinish()
-        return superHeroesViewController
+        return vc
     }
 }
