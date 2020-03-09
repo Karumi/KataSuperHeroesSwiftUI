@@ -29,16 +29,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     fileprivate func configureWindow() {
-        window?.backgroundColor = UIColor.windowBackgroundColor
+        window?.backgroundColor = UIColor(named: "windowBackgroundColor")
     }
 
     fileprivate func configureNavigationBarStyle() {
         let navigationBarAppearance = UINavigationBar.appearance()
-        navigationBarAppearance.barTintColor = UIColor.navigationBarColor
-        navigationBarAppearance.tintColor = UIColor.navigationBarTitleColor
+        navigationBarAppearance.barTintColor = UIColor(named: "navigationBarColor")
+        navigationBarAppearance.tintColor = UIColor(named: "navigationBarTitleColor")
         navigationBarAppearance.isTranslucent = false
         navigationBarAppearance.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.navigationBarTitleColor
+            NSAttributedString.Key.foregroundColor : UIColor(named: "navigationBarTitleColor")!
         ]
     }
 }

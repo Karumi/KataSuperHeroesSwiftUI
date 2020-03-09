@@ -39,18 +39,18 @@ class SuperHeroesViewControllerTests: AcceptanceTestCase {
         openSuperHeroesViewController()
 
         for i in 0..<superHeroes.count {
-            let superHeroCell = tester().waitForView(withAccessibilityLabel: "\(superHeroes[i].name) Avenger Badge")
+            tester().waitForView(withAccessibilityLabel: "\(superHeroes[i].name) Avenger Badge")
         }
     }
 
     func testDoNotShowAvengersBadgeIfSuperHeroesAreNotPartOfTheAvengersTeam() {
         let superHeroes = givenThereAreSomeSuperHeroes()
 
-        let viewController = openSuperHeroesViewController()
+        openSuperHeroesViewController()
 
         for i in 0..<superHeroes.count {
 
-            let superHeroCell = tester().waitForAbsenceOfView(withAccessibilityLabel:  "\(superHeroes[i].name) Avenger Badge")
+            tester().waitForAbsenceOfView(withAccessibilityLabel:  "\(superHeroes[i].name) Avenger Badge")
         }
     }
 

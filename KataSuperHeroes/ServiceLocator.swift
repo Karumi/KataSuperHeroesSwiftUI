@@ -29,10 +29,6 @@ class ServiceLocator {
         return SuperHeroDetailViewModel(superHeroName: superHeroName, getSuperHeroByName: getSuperHeroByName)
     }
 
-    fileprivate func provideSuperHeroesDataSource() -> SuperHeroesTableDataSource {
-        return SuperHeroesTableDataSource()
-    }
-
     func provideSuperHeroesViewModel() -> SuperHeroesViewModel {
         let getSuperHeroes = provideGetSuperHeroesUseCase()
         return SuperHeroesViewModel(getSuperHeroes: getSuperHeroes)
@@ -41,9 +37,4 @@ class ServiceLocator {
     fileprivate func provideGetSuperHeroesUseCase() -> GetSuperHeroes {
         return GetSuperHeroes(repository: SuperHeroesRepository())
     }
-
-    fileprivate lazy var storyBoard: KataSuperHeroesStoryboard = {
-        return KataSuperHeroesStoryboard(name: "SuperHeroes")
-    }()
-
 }

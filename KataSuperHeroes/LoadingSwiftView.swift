@@ -11,7 +11,7 @@ import SwiftUI
 struct LoadingSwiftView: UIViewRepresentable {
     func makeUIView(context: UIViewRepresentableContext<LoadingSwiftView>) -> LoadingView {
         let loadingView = LoadingView()
-        loadingView.color = UIColor.loadingColor
+        loadingView.color = UIColor(named: "loadingColor")
         return loadingView
     }
 
