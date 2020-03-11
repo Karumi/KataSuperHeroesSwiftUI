@@ -10,6 +10,7 @@ import Foundation
 import KIF
 import Nimble
 import UIKit
+import SwiftUI
 @testable import KataSuperHeroes
 
 class SuperHeroDetailViewControllerTests: AcceptanceTestCase {
@@ -29,7 +30,7 @@ class SuperHeroDetailViewControllerTests: AcceptanceTestCase {
 
         openSuperHeroDetailViewController(superHero.name)
 
-        tester().waitForView(withAccessibilityLabel: "Name: \(superHero.name)")
+        tester().waitForView(withAccessibilityLabel: "Superhero name", value: superHero.name, traits: .staticText)
     }
 
     func testShowsSuperHeroDescription() {
@@ -37,7 +38,7 @@ class SuperHeroDetailViewControllerTests: AcceptanceTestCase {
 
         openSuperHeroDetailViewController(superHero.name)
 
-        tester().waitForView(withAccessibilityLabel: "Description: \(superHero.name)")
+        tester().waitForView(withAccessibilityLabel: "Superhero description", value: superHero.description, traits: .staticText)
     }
 
     func testDoesNotShowAvengersBadgeIfTheHeroIsNotPartOfTheAvengersTeam() {
@@ -73,13 +74,13 @@ class SuperHeroDetailViewControllerTests: AcceptanceTestCase {
     }
 
     fileprivate func openSuperHeroDetailViewController(_ superHeroName: String) {
-        let superHeroDetailViewController = ServiceLocator()
-            .provideSuperHeroDetailViewController(superHeroName) as! SuperHeroDetailViewController
-        superHeroDetailViewController.presenter = SuperHeroDetailPresenter(ui: superHeroDetailViewController,
+        var superHeroDetailView = ServiceLocator()
+            .provideSuperHeroDetail(superHeroName)
+        superHeroDetailView.viewModel = SuperHeroDetailViewModel(
             superHeroName: superHeroName,
             getSuperHeroByName: GetSuperHeroByName(repository: repository))
         let rootViewController = UINavigationController()
-        rootViewController.viewControllers = [superHeroDetailViewController]
+        rootViewController.viewControllers = [UIHostingController(rootView: superHeroDetailView)]
         present(viewController: rootViewController)
         tester().waitForAnimationsToFinish()
     }

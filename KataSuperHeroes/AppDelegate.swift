@@ -29,24 +29,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     fileprivate func configureWindow() {
-        window?.backgroundColor = UIColor.windowBackgroundColor
+        window?.backgroundColor = UIColor(named: "windowBackgroundColor")
     }
 
     fileprivate func configureNavigationBarStyle() {
         let navigationBarAppearance = UINavigationBar.appearance()
-        navigationBarAppearance.barTintColor = UIColor.navigationBarColor
-        navigationBarAppearance.tintColor = UIColor.navigationBarTitleColor
+        navigationBarAppearance.barTintColor = UIColor(named: "navigationBarColor")
+        navigationBarAppearance.tintColor = UIColor(named: "navigationBarTitleColor")
         navigationBarAppearance.isTranslucent = false
-        navigationBarAppearance.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([
-            NSAttributedString.Key.foregroundColor.rawValue : UIColor.navigationBarTitleColor
-        ])
+        navigationBarAppearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(named: "navigationBarTitleColor")!
+        ]
     }
-
-}
-
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }
